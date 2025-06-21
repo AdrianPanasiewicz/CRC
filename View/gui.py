@@ -2,23 +2,24 @@ import sys
 import numpy as np
 import random
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
-                             QHBoxLayout, QTextEdit, QLineEdit, QPushButton)
+                             QHBoxLayout, QTextEdit, QLineEdit, QPushButton, QFrame)
 from PyQt6.QtCore import QTimer, QElapsedTimer
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
+from diode_widget import DiodeWidget
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("SYMULACJA Z PEŁNĄ HISTORIĄ")
+        self.setWindowTitle("Stacja naziemna")
         self.setGeometry(100, 100, 1400, 700)
 
         # Konfiguracja
-        self.total_duration = 15.0  # Czas trwania symulacji
-        self.sample_rate = 100  # Próbki na sekundę
+        self.total_duration = 15.0
+        self.sample_rate = 100
 
-        # Dane
+        # Dane - #TODO Należy to poprawić
         self.time_data = np.array([])
         self.y1_data = np.array([])
         self.y2_data = np.array([])
@@ -36,6 +37,9 @@ class MainWindow(QMainWindow):
         self.plot_timer = QTimer()
         self.plot_timer.timeout.connect(self.update_plots)
 
+
+        self.diode_states = [0, 1, 2]
+
     def init_ui(self):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
@@ -50,30 +54,30 @@ class MainWindow(QMainWindow):
         self.canvas1 = FigureCanvasQTAgg(self.figure1)
         self.ax1 = self.figure1.add_subplot(111)
         self.line1, = self.ax1.plot([], [], 'b-', linewidth=1.8)
-        self.ax1.set_title("SYGNAŁ SINUSOIDALNY (pełna historia)", pad=20)
+        self.ax1.set_title("Wykres wysokości", pad=20)
         self.ax1.grid(True, alpha=0.3)
-        self.ax1.set_xlabel("Czas [s] (od 0 do aktualnego)", fontsize=10)
-        self.ax1.set_ylabel("Amplituda", fontsize=10)
+        self.ax1.set_xlabel("Czas [s]", fontsize=10)
+        self.ax1.set_ylabel("Wysokość  [m]", fontsize=10)
 
         # Wykres 2
         self.figure2 = Figure(figsize=(10, 3.5), tight_layout=True)
         self.canvas2 = FigureCanvasQTAgg(self.figure2)
         self.ax2 = self.figure2.add_subplot(111)
         self.line2, = self.ax2.plot([], [], 'r-', linewidth=1.8)
-        self.ax2.set_title("SYGNAŁ COSINUSOIDALNY (pełna historia)", pad=20)
+        self.ax2.set_title("Wykres prędkości", pad=20)
         self.ax2.grid(True, alpha=0.3)
-        self.ax2.set_xlabel("Czas [s] (od 0 do aktualnego)", fontsize=10)
-        self.ax2.set_ylabel("Amplituda", fontsize=10)
+        self.ax2.set_xlabel("Czas [s]", fontsize=10)
+        self.ax2.set_ylabel("Prędkość [m/s]", fontsize=10)
 
         # Wykres 3
         self.figure3 = Figure(figsize=(10, 3.5), tight_layout=True)
         self.canvas3 = FigureCanvasQTAgg(self.figure3)
         self.ax3 = self.figure3.add_subplot(111)
         self.line3, = self.ax3.plot([], [], 'g-', linewidth=1.8)
-        self.ax3.set_title("SZUM LOSOWY (pełna historia)", pad=20)
+        self.ax3.set_title("Wykreś przyspieszenia", pad=20)
         self.ax3.grid(True, alpha=0.3)
-        self.ax3.set_xlabel("Czas [s] (od 0 do aktualnego)", fontsize=10)
-        self.ax3.set_ylabel("Wartość", fontsize=10)
+        self.ax3.set_xlabel("Czas [s]", fontsize=10)
+        self.ax3.set_ylabel("Przyspieszenie [m/s^2]", fontsize=10)
 
         plot_layout.addWidget(self.canvas1)
         plot_layout.addWidget(self.canvas2)
@@ -83,24 +87,48 @@ class MainWindow(QMainWindow):
         chat_widget = QWidget()
         chat_layout = QVBoxLayout(chat_widget)
 
+        # Diode panel at the top
+        diode_panel = QWidget()
+        diode_layout = QHBoxLayout(diode_panel)
+        diode_layout.setContentsMargins(0, 0, 0, 0)
+
+        # Create three diodes
+        self.diode1 = DiodeWidget("START",0)
+        self.diode2 = DiodeWidget("APOGEUM",1)
+        self.diode3 = DiodeWidget("UTRATA SYGNAŁU",2)
+
+        diode_layout.addWidget(self.diode1)
+        diode_layout.addWidget(self.diode2)
+        diode_layout.addWidget(self.diode3)
+
+        # Separator
+        separator = QFrame()
+        separator.setFrameShape(QFrame.Shape.HLine)
+        separator.setFrameShadow(QFrame.Shadow.Sunken)
+        separator.setStyleSheet(
+            "background-color: #c0c0c0;")
+        separator.setFixedHeight(2)
+
         self.chat_box = QTextEdit()
         self.chat_box.setReadOnly(True)
-        self.chat_box.append(">>> SYSTEM: Gotowy do 15-sekundowej symulacji z pełną historią <<<")
+        self.chat_box.append("> SYSTEM: Uruchomienie stacji naziemnej")
 
-        input_widget = QWidget()
-        input_layout = QHBoxLayout(input_widget)
+        chat_layout.addWidget(diode_panel)
+        chat_layout.addWidget(separator)
+        chat_layout.addWidget(self.chat_box, 1)
 
-        self.message_input = QLineEdit()
-        self.message_input.setPlaceholderText("Wpisz wiadomość...")
-        self.send_button = QPushButton("WYŚLIJ")
-        self.send_button.setFixedWidth(120)
-        self.send_button.clicked.connect(self.send_message)
+        # input_widget = QWidget()
+        # input_layout = QHBoxLayout(input_widget)
 
-        input_layout.addWidget(self.message_input)
-        input_layout.addWidget(self.send_button)
+        # self.message_input = QLineEdit()
+        # self.message_input.setPlaceholderText("Wpisz wiadomość...")
+        # self.send_button = QPushButton("WYŚLIJ")
+        # self.send_button.setFixedWidth(120)
+        # self.send_button.clicked.connect(self.send_message)
 
-        chat_layout.addWidget(self.chat_box)
-        chat_layout.addWidget(input_widget)
+        # input_layout.addWidget(self.message_input)
+        # input_layout.addWidget(self.send_button)
+
 
         main_layout.addWidget(plot_widget, 80)
         main_layout.addWidget(chat_widget, 20)
@@ -114,12 +142,11 @@ class MainWindow(QMainWindow):
 
         # Uruchomienie
         self.real_timer.start()
-        self.data_timer.start(20)  # Aktualizacja danych co 20ms
-        self.plot_timer.start(30)  # Aktualizacja wykresów co 30ms
+        self.data_timer.start(20)
+        self.plot_timer.start(30)
 
-        self.chat_box.append(f"\n>>> Rozpoczęto {self.total_duration}s symulacji <<<")
+        self.chat_box.append(f"\n> Rozpoczęto {self.total_duration}s symulacji")
 
-        # Zatrzymanie po 15s
         QTimer.singleShot(int(self.total_duration * 1000), self.stop_simulation)
 
     def generate_data(self):
@@ -127,7 +154,6 @@ class MainWindow(QMainWindow):
         if elapsed >= self.total_duration:
             return
 
-        # Nowe dane
         new_time = elapsed
         freq = 0.5  # Hz
 
@@ -144,7 +170,7 @@ class MainWindow(QMainWindow):
 
         # Raport co 1s
         if abs(new_time - round(new_time)) < 0.02:
-            self.chat_box.append(f"Czas: {new_time:.1f}s | Próbek: {len(self.time_data)}")
+            self.chat_box.append(f"> Czas: {new_time:.1f}s | Próbek: {len(self.time_data)}")
 
     def update_plots(self):
         if len(self.time_data) == 0:
@@ -152,9 +178,9 @@ class MainWindow(QMainWindow):
 
         current_time = self.time_data[-1]
 
-        # Zawsze pokazuj od 0 do aktualnego czasu + margines
         x_min = 0
-        x_max = current_time + 0.5  # Mały margines
+        time_margin = 0.1
+        x_max = (1+time_margin)*current_time
 
         # Aktualizuj wszystkie wykresy
         for ax, line, y_data in zip(
@@ -166,28 +192,26 @@ class MainWindow(QMainWindow):
 
             # Skalowanie osi Y
             if len(y_data) > 0:
-                y_min = min(y_data) - 0.2
-                y_max = max(y_data) + 0.2
+                value_margin = 0.1
+                y_min = (1+value_margin)*min(y_data)
+                y_max = (1+value_margin)*max(y_data)
                 ax.set_ylim(y_min, y_max)
 
-            # Skalowanie osi X (zawsze od 0)
             ax.set_xlim(x_min, x_max)
-
-            # Odśwież
             ax.figure.canvas.draw()
 
     def stop_simulation(self):
         self.data_timer.stop()
         self.plot_timer.stop()
         elapsed = self.real_timer.elapsed() / 1000.0
-        self.chat_box.append(f"\n>>> Zakończono symulację (czas: {elapsed:.2f}s) <<<")
-        self.chat_box.append(f">>> Zebrano {len(self.time_data)} próbek <<<")
+        self.chat_box.append(f"\n> Zakończono symulację (czas: {elapsed:.2f}s)")
+        self.chat_box.append(f"> Zebrano {len(self.time_data)} próbek")
 
-    def send_message(self):
-        message = self.message_input.text()
-        if message:
-            self.chat_box.append(f"TY: {message}")
-            self.message_input.clear()
+    # def send_message(self):
+    #     message = self.message_input.text()
+    #     if message:
+    #         self.chat_box.append(f"TY: {message}")
+    #         self.message_input.clear()
 
 
 if __name__ == "__main__":

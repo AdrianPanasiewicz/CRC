@@ -1,0 +1,45 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.9 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.9">
+  <diagram name="Page-1" id="NcSPWLBuzY9AIP3GM6-T">
+    <mxGraphModel dx="1382" dy="466" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="PNZEXYwv9-3f0WOJUJaZ-3" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EnQCA6W0uELH13Itvkm_-1" target="EnQCA6W0uELH13Itvkm_-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EnQCA6W0uELH13Itvkm_-1" value="GUI" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="60" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PNZEXYwv9-3f0WOJUJaZ-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;endArrow=none;" edge="1" parent="1" source="EnQCA6W0uELH13Itvkm_-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="90" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EnQCA6W0uELH13Itvkm_-2" value="ProcessData" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="240" y="220" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PNZEXYwv9-3f0WOJUJaZ-1" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.457;entryY=-0.004;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="EnQCA6W0uELH13Itvkm_-3" target="EnQCA6W0uELH13Itvkm_-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EnQCA6W0uELH13Itvkm_-3" value="USB_reader" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="130" y="60" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PNZEXYwv9-3f0WOJUJaZ-2" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.591;entryY=1.014;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="EnQCA6W0uELH13Itvkm_-2" target="EnQCA6W0uELH13Itvkm_-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PNZEXYwv9-3f0WOJUJaZ-4" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.38;entryY=1.007;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.611;exitY=-0.002;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="EnQCA6W0uELH13Itvkm_-2" target="EnQCA6W0uELH13Itvkm_-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PNZEXYwv9-3f0WOJUJaZ-6" value="Antena" style="shape=mxgraph.cisco.wireless.antenna;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="58" y="167" width="60" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="PNZEXYwv9-3f0WOJUJaZ-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="PNZEXYwv9-3f0WOJUJaZ-7" target="PNZEXYwv9-3f0WOJUJaZ-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PNZEXYwv9-3f0WOJUJaZ-7" value="Rakieta" style="verticalLabelPosition=bottom;sketch=0;html=1;fillColor=#282828;strokeColor=none;verticalAlign=top;pointerEvents=1;align=center;shape=mxgraph.cisco_safe.technology_icons.icon24;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="184" width="50" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
